@@ -54,6 +54,8 @@ namespace SymmetricEncryptionAPI.Controllers
 
             stopwatch.Stop(); // Stop measuring
 
+            
+
             // to return both cipghertext and time, creating an anonymous type in C#.
             // An anonymous type is a simple class created on the fly without explicitly defining a class.
             // It is useful for encapsulating a set of read-only properties into a single object.

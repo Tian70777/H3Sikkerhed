@@ -7,10 +7,11 @@
     private string selectedAlgorithm;
     private string plainText = "";
     private string cipherText = "";
+    private string decryptedPlainText = "";
     private string key = "";
     private string iv = "";
-    private string encryptionTime = "";
-    private string decryptionTime = "";
+    private string encryptionTimeMs;
+    private string decryptionTimeMs;
 
     // 1) OnInitializedAsync: Get the list of crypto methods from the API
     protected override async Task OnInitializedAsync()
@@ -31,11 +32,19 @@
         }
     }
 
+    // 2) Generate Key & IV for the selected algorithm
     private async Task GenerateKeyAndIV()
     {
         try
         {
-           
+            // Calls GET /api/crypto/generateKeyIV?methodName=...
+            var response = await Http.GetFromJsonAsync<GenerateKeyIvResponse>(
+                $"api/crypto/generateKeyIV?methodName={selectedAlgorithm}"
+            );
+
+            key = response.key;
+            iv = response.iv;
+
         } catch (Exception ex)
         {
             // Handle exception (e.g., log it, show a message to the user)
@@ -43,10 +52,24 @@
         }
     }
 
+    // 3) Encrypt the plainText using the selected method, key, and IV
     private async Task EncryptText()
     {
         try{
-            
+            var requestBody = new EncryptRequest
+                {
+                    MethodName = selectedAlgorithm,
+                    Key = key,
+                    IV = iv,
+                    PlainText = plainText
+                };
+
+            // Calls POST /api/crypto/encrypt
+            var response = await Http.PostAsJsonAsync("api/crypto/encrypt", requestBody);
+            var encryptResult = await response.Content.ReadFromJsonAsync<EncryptResponse>();
+
+            cipherText = encryptResult.cipherText;
+            encryptionTimeMs = encryptResult.elapsedTimeMs.ToString();
         }
         catch (Exception ex)
         {
@@ -55,16 +78,65 @@
         }
     }
 
+    // 4) Decrypt the cipherText using the selected method, key, and IV
     private async Task DecryptText()
     {
         try{
-            
+            var requestBody = new DecryptRequest
+                {
+                    MethodName = selectedAlgorithm,
+                    Key = key,
+                    IV = iv,
+                    CipherText = cipherText
+                };
+
+            // Calls POST /api/crypto/decrypt
+            var response = await Http.PostAsJsonAsync("api/crypto/decrypt", requestBody);
+            var decryptResult = await response.Content.ReadFromJsonAsync<DecryptResponse>();
+
+            decryptedPlainText = decryptResult.plainText;
+            decryptionTimeMs = decryptResult.elapsedTimeMs.ToString();
         }
         catch (Exception ex)
         {
             // Handle exception (e.g., log it, show a message to the user)
             Console.WriteLine($"Error decrypting text: {ex.Message}");
         }
+    }
+
+    // Classes matching your controller’s request/response models
+    private class GenerateKeyIvResponse
+    {
+        public string key { get; set; }
+        public string iv { get; set; }
+    }
+
+    private class EncryptRequest
+    {
+        public string MethodName { get; set; }
+        public string Key { get; set; }
+        public string IV { get; set; }
+        public string PlainText { get; set; }
+    }
+
+    private class EncryptResponse
+    {
+        public string cipherText { get; set; }
+        public long elapsedTimeMs { get; set; }
+    }
+
+    private class DecryptRequest
+    {
+        public string MethodName { get; set; }
+        public string Key { get; set; }
+        public string IV { get; set; }
+        public string CipherText { get; set; }
+    }
+
+    private class DecryptResponse
+    {
+        public string plainText { get; set; }
+        public long elapsedTimeMs { get; set; }
     }
 }
 
@@ -92,17 +164,12 @@
                 </div>
 
 
-                <div><button class="btn btn-success mb-2" @onclick="EncryptText">Encrypt</button></div>
-                <div><button class="btn btn-danger mb-2" @onclick="DecryptText">Decrypt</button></div>
-
-                <div><button class="btn btn-info mb-2">Get Encrypt Time</button></div>
-                <div><button class="btn btn-info mb-2">Get Decrypt Time</button></div>
 
                 <div class="mt-2">
-                    <label>Encryption Time: @encryptionTime</label>
+                    <label>Encryption Time: @encryptionTimeMs</label>
                 </div>
                 <div class="mt-2">
-                    <label>Decryption Time: @decryptionTime</label>
+                    <label>Decryption Time: @decryptionTimeMs</label>
                 </div>
                 
                 
@@ -144,7 +211,7 @@
 
             <div class="mb-3">
                 <label for="plainTextOutput" class="form-label">PlainText (Output):</label>
-                <textarea id="plainTextOutput" class="form-control" rows="2" @bind="plainText" placeholder="Decrypted text will appear here..."></textarea>
+                <textarea id="plainTextOutput" class="form-control" rows="2" @bind="decryptedPlainText" placeholder="Decrypted text will appear here..."></textarea>
             </div>
 
         </div>
