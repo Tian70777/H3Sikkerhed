@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hash", "Hash\Hash.csproj", "{8D7E1050-941E-4329-9BD6-3E49777ED1BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SymmetricEncryptionApp", "SymmetricEncryptionApp\SymmetricEncryptionApp.csproj", "{12ED305D-D62D-4F8D-9CC0-CE90CB4731A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SymmetricEncryptionAPI", "SymmetricEncryptionAPI\SymmetricEncryptionAPI.csproj", "{E8AC2240-E4E1-42D6-885F-DC2CBCCC50C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D7E1050-941E-4329-9BD6-3E49777ED1BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D7E1050-941E-4329-9BD6-3E49777ED1BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D7E1050-941E-4329-9BD6-3E49777ED1BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D7E1050-941E-4329-9BD6-3E49777ED1BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12ED305D-D62D-4F8D-9CC0-CE90CB4731A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12ED305D-D62D-4F8D-9CC0-CE90CB4731A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12ED305D-D62D-4F8D-9CC0-CE90CB4731A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12ED305D-D62D-4F8D-9CC0-CE90CB4731A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8AC2240-E4E1-42D6-885F-DC2CBCCC50C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8AC2240-E4E1-42D6-885F-DC2CBCCC50C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8AC2240-E4E1-42D6-885F-DC2CBCCC50C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8AC2240-E4E1-42D6-885F-DC2CBCCC50C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

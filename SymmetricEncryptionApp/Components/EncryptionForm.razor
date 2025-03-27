@@ -1,0 +1,162 @@
+﻿@inject HttpClient Http
+@inject NavigationManager Navigation
+
+@code {
+    // Fields to hold data
+    private List<string> algorithms = new List<string>();
+    private string selectedAlgorithm;
+    private string plainText = "";
+    private string cipherText = "";
+    private string key = "";
+    private string iv = "";
+    private string encryptionTime = "";
+    private string decryptionTime = "";
+
+    // 1) OnInitializedAsync: Get the list of crypto methods from the API
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // // Calls GET /api/crypto/methods
+            algorithms = await Http.GetFromJsonAsync<List<string>>("api/crypto/methods");
+
+            if (algorithms?.Count > 0)
+            {
+                selectedAlgorithm = algorithms[0]; // default selection
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching algorithms: {ex.Message}");
+        }
+    }
+
+    private async Task GenerateKeyAndIV()
+    {
+        try
+        {
+           
+        } catch (Exception ex)
+        {
+            // Handle exception (e.g., log it, show a message to the user)
+            Console.WriteLine($"Error generating key and IV: {ex.Message}");
+        }
+    }
+
+    private async Task EncryptText()
+    {
+        try{
+            
+        }
+        catch (Exception ex)
+        {
+            // Handle exception (e.g., log it, show a message to the user)
+            Console.WriteLine($"Error encrypting text: {ex.Message}");
+        }
+    }
+
+    private async Task DecryptText()
+    {
+        try{
+            
+        }
+        catch (Exception ex)
+        {
+            // Handle exception (e.g., log it, show a message to the user)
+            Console.WriteLine($"Error decrypting text: {ex.Message}");
+        }
+    }
+}
+
+<div class="container">
+    <div class="row">
+
+        <!-- Left column -->
+        <div class="col-md-4 border p-3">
+            <div class="encryption-form p-4 bg-gray-100 rounded-lg shadow-lg">
+                <label class="block text-lg mb-2">Choose Algorithm:</label>
+                <select @bind="selectedAlgorithm" class="form-select p-2 rounded-md mb-4 w-full">
+                    @foreach (var algorithm in algorithms)
+                    {
+                        <option>@algorithm</option>
+                    }
+                </select>
+                <div><button class="btn btn-primary me-2 mb-2" @onclick="GenerateKeyAndIV">Generate Key and IV</button></div>
+                <div class="form-group mb-2">
+                    <label for="Key">Key</label>
+                    <input type="text" class="form-control" id="Key" @bind="key" placeholder=" " />
+                </div>
+                <div class="form-group mb-2">
+                    <label for="IV">IV</label>
+                    <input type="text" class="form-control" id="IV" @bind="iv" placeholder=" " />
+                </div>
+
+
+                <div><button class="btn btn-success mb-2" @onclick="EncryptText">Encrypt</button></div>
+                <div><button class="btn btn-danger mb-2" @onclick="DecryptText">Decrypt</button></div>
+
+                <div><button class="btn btn-info mb-2">Get Encrypt Time</button></div>
+                <div><button class="btn btn-info mb-2">Get Decrypt Time</button></div>
+
+                <div class="mt-2">
+                    <label>Encryption Time: @encryptionTime</label>
+                </div>
+                <div class="mt-2">
+                    <label>Decryption Time: @decryptionTime</label>
+                </div>
+                
+                
+            </div>
+        </div>
+        <!-- Right column: Encryption/Decryption Sections  -->
+        <div class="col-md-8 border p-3">
+            
+            <!-- ENCRYPTION Section -->
+            <h5>ENCRYPTION</h5>
+            <div class="mb-3">
+                <label for="plainTextInput" class="form-label">PlainText (Input):</label>
+                <textarea id="plainTextInput" class="form-control" rows="3" @bind="plainText" placeholder="Type text to encrypt..."></textarea>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-success me-2 " @onclick="EncryptText">Encrypt</button>
+                <button class="btn btn-info">Get Encrypt Time</button>
+            </div>
+
+            <div class="mb-3">
+                <label for="cipherTextOutput" class="form-label">CipherText (Output, hex/base64):</label>
+                <textarea id="cipherTextOutput" class="form-control" rows="2" @bind="cipherText" placeholder="Encrypted text will appear here..."></textarea>
+            </div>
+
+            <hr />
+
+            <!-- DECRYPTION Section -->
+            <h5>DECRYPTION</h5>
+            <div class="mb-3">
+                <label for="cipherTextInput" class="form-label">CipherText (Input, hex/base64):</label>
+                <textarea id="cipherTextInput" class="form-control" rows="3" placeholder="Paste ciphertext to decrypt..."></textarea>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-danger me-2" @onclick="DecryptText">Decrypt</button>
+                <button class="btn btn-warning">Get Decrypt Time</button>
+            </div>
+
+            <div class="mb-3">
+                <label for="plainTextOutput" class="form-label">PlainText (Output):</label>
+                <textarea id="plainTextOutput" class="form-control" rows="2" @bind="plainText" placeholder="Decrypted text will appear here..."></textarea>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-input, .form-select, .form-textarea {
+        border: 1px solid #ccc;
+        margin-bottom: 0.5rem;
+    }
+    .btn:hover {
+        opacity: 0.9;
+    }
+</style>
